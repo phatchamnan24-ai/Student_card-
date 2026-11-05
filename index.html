@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <script src="https://cloudflare.com"></script>
+    <script src="https://cloudflare.com"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធចុះឈ្មោះ និងបង្កើតកាតសិស្ស</title>
+    <!-- ទាញយក Font Kantumruy Pro (សម្រាប់អក្សរទូទៅ) និង Font Moul (សម្រាប់ចំណងជើងកាត) -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <!-- ភ្ជាប់ទៅកាន់ឯកសារ CSS ខាងក្រៅ -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ប្រអប់ Form បង្រួមចំកណ្តាលអេក្រង់ -->
+    <div class="form-container">
+        <div class="text-center mb-6 border-b pb-4">
+            <h3>ទម្រង់ចុះឈ្មោះព័ត៌មានសិស្ស</h3>
+            <p class="subtitle">សូមបំពេញព័ត៌មានខាងក្រោមដើម្បីបង្កើតកាតសម្គាល់ខ្លួន</p>
+        </div>
+        
+        <form id="studentForm">
+            <!-- ជួរទី១ -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">ឈ្មោះពេញ (ខ្មែរ)</label>
+                    <input type="text" id="nameKh" required class="form-input" placeholder="ឧ. ប៊ុន សុវណ្ណ">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ឈ្មោះពេញ (English)</label>
+                    <input type="text" id="nameEn" required class="form-input" placeholder="ឧ. PON SOVANN">
+                </div>
+            </div>
+
+            <!-- ជួរទី២ -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">អត្តសញ្ញាណ ID</label>
+                    <input type="text" id="studentId" required class="form-input" placeholder="ឧ. 007">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">ភេទ (Gender)</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="ប្រុស / Male" checked class="form-radio">
+                            <span>ប្រុស / Male</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="gender" value="ស្រី / Female" class="form-radio">
+                            <span>ស្រី / Female</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ជួរទី៣ -->
+            <div class="form-grid">
+                <div class="form-group">
+                    <label class="form-label">ថ្ងៃខែឆ្នាំកំណើត</label>
+                    <input type="date" id="dob" required class="form-input">
+                </div>
+                <div class="form-group">
+    <label class="form-label">ជំនាញ (Skill)</label>
+    <select id="major" required class="form-input" style="cursor: pointer;">
+        <option value="" disabled selected>--- ជ្រើសរើសជំនាញ IT ---</option>
+        <option value="Information Technology">វិទ្យាសាស្ត្រកុំព្យូទ័រ (Computer Science)</option>
+        <option value="Web Development">អភិវឌ្ឍន៍វិបសាយ (Web Development)</option>
+        <option value="Network & Security">ប្រព័ន្ធបណ្តាញ និងសន្តិសុខ (Network & Security)</option>
+        <option value="Mobile App Development">អភិវឌ្ឍន៍កម្មវិធីទូរស័ព្ទ (Mobile Development)</option>
+        <option value="Data Science">វិទ្យាសាស្ត្រទិន្នន័យ (Data Science)</option>
+        <option value="Design & UX/UI">រចនាប្រព័ន្ធឌីជីថល (UX/UI Design)</option>
+    </select>
+</div>
+
+            </div>
+
+            <!-- ជួរទី៤ -->
+                        <!-- ជួរទី៤៖ កន្លែងជ្រើសរើសរូបថតសិស្ស (បានជួសជុល ID ឱ្យត្រូវស្តង់ដារ) -->
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label">រូបថតសិស្ស</label>
+                <label class="upload-zone" for="photoInput">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <p class="upload-text" id="uploadStatusText">ចុចទីនេះ ដើម្បីជ្រើសរើសរូបថតសិស្ស</p>
+                    <p class="upload-sub">គាំទ្រប្រភេទរូបភាព JPG, PNG</p>
+                    <input type="file" id="photoInput" accept="image/*" required style="display: none;">
+                </label>
+            </div>
+
+
+            <button type="submit" class="btn-submit">បង្កើតកាតសម្គាល់ខ្លួន</button>
+        </form>
+    </div>
+
+    <!-- ================= ផ្ទាំង POP-UP MODAL ================= -->
+        <!-- ================= ផ្ទាំង POP-UP MODAL បង្ហាញកាតសិស្ស ================= -->
+    <div id="cardModal" class="modal">
+        <div id="idCard" class="id-card">
+            <div class="card-header">
+                <h4>កាតសម្គាល់ខ្លួនសិស្ស</h4>
+                <p>Student Identification Card</p>
+            </div>
+            
+            <div class="avatar-container">
+                <img id="cardImage" src="" alt="Student">
+            </div>
+            
+            <div class="card-body">
+                <h2 id="cardNameKh">ឈ្មោះសិស្ស</h2>
+                <p id="cardNameEn" class="en-name">STUDENT NAME</p>
+                
+                <div class="card-divider"></div>
+                
+                <div class="card-info">
+                    <div class="info-row"><span class="info-label">អត្តសញ្ញាណ ID:</span><span id="cardId" class="info-value">000</span></div>
+                    <div class="info-row"><span class="info-label">ភេទ (Gender):</span><span id="cardGender" class="info-value">-</span></div>
+                    <div class="info-row"><span class="info-label">ថ្ងៃខែឆ្នាំកំណើត:</span><span id="cardDob" class="info-value">-</span></div>
+                    <div class="info-row"><span class="info-label">ជំនាញ (Skill):</span><span id="cardMajor" class="info-value">-</span></div>
+                </div>
+
+                <!-- បន្ថែមប៊ូតុងពណ៌ខៀវនេះ សម្រាប់ចុចផ្ញើទៅ Telegram ផ្ទាល់ -->
+                <button id="sendToTelegramBtn" class="btn-submit" style="background-color: #2481cc; margin-top: 20px;">
+                    ✈️ ផ្ញើព័ត៌មានចូល Telegram
+                </button>
+               
+                <div id="qrcode"></div>
+            </div>
+        </div>
+        <button id="closeModalBtn" class="btn-close">បិទផ្ទាំងនេះ</button>
+    </div>
+
+
+    <script src="script.js"></script>
+
+        <!-- លីងទាញយក Library សម្រាប់បង្កើត QR Code -->
+    <script src="https://cloudflare.com"></script>
+    
+    <!-- លីងទៅកាន់កូដថ្មីដែលយើងទើបបង្កើតមុននេះ -->
+    <script src="qr-generator.js"></script>
+</body>
+</html>
+
+</body>
+</html>
